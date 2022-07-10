@@ -11,6 +11,17 @@ public class WebOrdersPage {
     public WebOrdersPage() {
         PageFactory.initElements(Driver.getDriver(), this);
     }
+        @FindBy(css = "#ctl00_menu li")
+        public List<WebElement> webOrders;
+
+
+    @FindBy(css = "#ctl00_MainContent_btnCheckAll")
+    public WebElement checkAllButton;
+
+
+
+    @FindBy(css = "#ctl00_MainContent_btnUncheckAll")
+    public WebElement uncheckAllButton;
 
 
 }

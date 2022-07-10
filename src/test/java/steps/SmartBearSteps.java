@@ -5,9 +5,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.bcel.generic.Select;
 import org.junit.Assert;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
+import pages.AddOrderPage;
 import pages.LogInPage;
 import pages.WebOrdersPage;
 import utils.Driver;
@@ -18,11 +20,14 @@ public class SmartBearSteps {
     WebDriver driver;
     LogInPage logInPage;
     WebOrdersPage webOrdersPage;
+     AddOrderPage addOrderPage;
 
     @Before
     public void setup() {
         driver = Driver.getDriver();
         logInPage = new LogInPage();
+        addOrderPage = new AddOrderPage();
+        webOrdersPage = new WebOrdersPage();
     }
     @Given("user is on {string}")
     public void userIsOn(String url) {
@@ -78,23 +83,123 @@ Assert.assertEquals("http://secure.smartbearsoftware.com/samples/testcomplete12/
     public void validateBelowMenuItemsAreDisplayed() {
         String[] expected = {"View all orders","View all products", "Order"};
         for (int i=0; i<3; i++){
-            System.out.println(webOrdersPage.webOrders.get(i).getText());
-            Assert.assertEquals(webOrdersPage.webOrders.get(i).getText(), expected[i]);
+            System.out.println(addOrderPage.webOrders.get(i).getText());
+            Assert.assertEquals(addOrderPage.webOrders.get(i).getText(), expected[i]);
 
         }
 
     }
 
     @When("user clicks on {string} button")
-    public void userClicksOnButton(String checkAllButton) {
+    public void userClicksOnButton(String checkButton) {
+        switch (checkButton){
+            case "Check All":
+                Waiter.pause(5);
+                addOrderPage.checkAllButton.click();
+                break;
+            case "Uncheck All":
+                addOrderPage.uncheckAllButton.click();
+                break;
+            case "Process":
+                addOrderPage.processButton.click();
+                break;
+            case "Delete Selected":
+                addOrderPage.deleteButton.click();
+                break;
+            default:
+                throw new NotFoundException("The check button is not defined properly in the feature file!!!");
+        }
 
     }
 
     @Then("all rows should be checked")
     public void allRowsShouldBeChecked() {
+        for (int i=0; i<8; i++){
+
+            Assert.assertTrue(logInPage.allProductChecked.get(i).isEnabled());
+
+        }
+
     }
 
     @Then("all rows should be unchecked")
     public void allRowsShouldBeUnchecked() {
+        for (int i=0; i<8; i++){
+
+            Assert.assertFalse(logInPage.allProductChecked.get(i).isSelected());
+
+        }
     }
+
+    @When("user clicks on {string} menu item")
+    public void userClicksOnMenuItem(String orderLink) {
+
+        switch (orderLink){
+            case "Order":
+                addOrderPage.orderButton.click();
+                break;
+            case "View all orders":
+                Waiter.pause(5);
+                addOrderPage.viewAllOrdersButton.click();
+                break;
+            default:
+                throw new NotFoundException("The order link is not defined properly in the feature file!!!");
+        }
+
+    }
+
+    @And("user selects {string} as product")
+    public void userSelectsAsProduct(String productSelect) {
+          addOrderPage.productSelect.sendKeys(productSelect);
+
+
+
+    }
+    @And("user enters {int} as quantity")
+    public void userEntersAsQuantity(int quantity) {
+        addOrderPage.productQuantity.clear();
+        Waiter.pause(3);
+        addOrderPage.productQuantity.sendKeys("2");
+
+    }
+
+    @And("user enters all address information")
+    public void userEntersAllAddressInformation() {
+        addOrderPage.customerName.sendKeys("Andrei Mitioglo");
+        addOrderPage.street.sendKeys("1545 W Chaase Ave");
+        addOrderPage.city.sendKeys("Chicago");
+        addOrderPage.state.sendKeys("Illinois");
+        addOrderPage.zip.sendKeys("60626");
+
+    }
+
+    @And("user enters all payment information")
+    public void userEntersAllPaymentInformation() {
+        addOrderPage.cardVisa.click();
+        addOrderPage.cardNumber.sendKeys("1234567812345");
+        addOrderPage.expireDate.sendKeys("06/23");
+    }
+
+    @Then("user should see their order displayed in the {string} table")
+    public void userShouldSeeTheirOrderDisplayedInTheTable(String listOfOrders) {
+       Assert.assertTrue( addOrderPage.listOfOrders.isEnabled());
+    }
+
+    @And("validate all information entered displayed correct with the order")
+    public void validateAllInformationEnteredDisplayedCorrectWithTheOrder() {
+
+    }
+
+    @Then("validate all orders are deleted from the {string}")
+    public void validateAllOrdersAreDeletedFromThe(String listOfAllOrders) {
+        Assert.assertTrue(addOrderPage.listOfAllOrdersCheck.isDisplayed());
+
+    }
+
+    @And("validate user sees {string} Message")
+    public void validateUserSeesMessage(String message) {
+        Assert.assertEquals("List of orders is empty. In order to add new order use this link.",addOrderPage.listOfOrdersMessage.getText());
+    }
+
+
 }

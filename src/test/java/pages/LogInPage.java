@@ -26,8 +26,8 @@ public class LogInPage {
 
 
 
-  @FindBy(id = "")
-  public WebElement viewAllProducts;
+  @FindBy(css = "table[class='SampleTable'] td:nth-child(1)")
+  public List<WebElement> allProductChecked;
 
   @FindBy(id = "")
   public WebElement orders;
