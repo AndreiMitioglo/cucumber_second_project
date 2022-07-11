@@ -56,7 +56,7 @@ public class AddOrderPage {
     @FindBy(css = ".content")
     public WebElement listOfAllOrdersCheck;
 
-    @FindBy(css = "//h2")
+    @FindBy(xpath = "//h2")
     public WebElement listOfOrders;
 
     @FindBy(id = "ctl00_MainContent_btnDelete")
@@ -82,5 +82,5 @@ public class AddOrderPage {
 
 
     @FindBy(xpath = "//table[@class=\"SampleTable\"]//tr[2]//td[2]")
-    public WebElement table; // css = "table[class="SampleTable"] tr:nth-child(2) td:nth-child(2)"
+    public List<WebElement> table; // css = "table[class="SampleTable"] tr:nth-child(2) td:nth-child(2)"
 }

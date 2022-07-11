@@ -5,6 +5,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.cucumber.datatable.DataTable;
 import org.apache.bcel.generic.Select;
 import org.junit.Assert;
 import org.openqa.selenium.NotFoundException;
@@ -166,9 +167,9 @@ Assert.assertEquals("http://secure.smartbearsoftware.com/samples/testcomplete12/
     @And("user enters all address information")
     public void userEntersAllAddressInformation() {
         addOrderPage.customerName.sendKeys("Andrei Mitioglo");
-        addOrderPage.street.sendKeys("1545 W Chaase Ave");
+        addOrderPage.street.sendKeys("1545 W Chase Ave");
         addOrderPage.city.sendKeys("Chicago");
-        addOrderPage.state.sendKeys("Illinois");
+        addOrderPage.state.sendKeys("IL");
         addOrderPage.zip.sendKeys("60626");
 
     }
@@ -186,7 +187,13 @@ Assert.assertEquals("http://secure.smartbearsoftware.com/samples/testcomplete12/
     }
 
     @And("validate all information entered displayed correct with the order")
-    public void validateAllInformationEnteredDisplayedCorrectWithTheOrder() {
+    public void validateAllInformationEnteredDisplayedCorrectWithTheOrder(DataTable dataTable) {
+        for (int i=0; i<dataTable.asList().size(); i++){
+
+            Assert.assertEquals(dataTable.asList().get(i), addOrderPage.table.get(i).getText());
+
+        }
+
 
     }
 

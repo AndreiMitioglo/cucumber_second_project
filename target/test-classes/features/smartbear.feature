@@ -12,7 +12,7 @@ Feature: Project -06
   Then user should see "Invalid Login or Password." Message
 
 
-
+@Smoke
   Scenario: Validate valid login attempt
 
     When user enters username as "Tester"
@@ -30,7 +30,7 @@ Feature: Project -06
     And validate below menu items are displayed
 
 
-
+  @Regression
 
   Scenario: Validate "Check All" and "Uncheck All" links
 
@@ -43,7 +43,7 @@ Feature: Project -06
     When user clicks on "Uncheck All" button
     Then all rows should be unchecked
 
-
+ 
   Scenario: Validate adding new order
 
     When user enters username as "Tester"
@@ -57,10 +57,11 @@ Feature: Project -06
     And user enters all payment information
     And user clicks on "Process" button
     And user clicks on "View all orders" menu item
-    #Then user should see their order displayed in the "List of All Orders" table
-    #And validate all information entered displayed correct with the order
+    Then user should see their order displayed in the "List of All Orders" table
+    And validate all information entered displayed correct with the order
+| |Andrei Mitioglo|FamilyAlbum|2|07/10/2022|1545 W Chase Ave|Chicago|IL|60626|Visa|1234567812345|06/23| |
 
-
+  @Regression
   Scenario: Validate "Delete Selected" button
 
 
